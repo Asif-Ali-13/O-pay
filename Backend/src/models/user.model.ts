@@ -56,7 +56,7 @@ userSchema.pre<IUser>("save", async function (next) {
 userSchema.methods.comparePassword = async function (
     password: string
 ): Promise<boolean> {
-    return await bcrypt.compare(this.password, password);
+    return await bcrypt.compare(password, this.password);
 }
 
 userSchema.methods.generateAccessToken = function (): string {
