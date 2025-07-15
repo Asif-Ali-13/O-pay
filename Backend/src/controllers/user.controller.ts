@@ -4,6 +4,7 @@ import { User } from "../models/user.model";
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
 import { Account } from "../models/account.model";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 export const signUpUser = asyncHandler(
     async (req: Request, res: Response) => {
@@ -116,5 +117,46 @@ export const filterUser = asyncHandler(
                 )
             }, 
             "filtered Successfull"));
+    }
+);
+
+export const logoutUser = asyncHandler(
+    async(req: Request, res: Response) => {
+        
+        const refreshToken = req.cookies?.refreshToken;
+        if(!refreshToken) 
+            return res.status(200).json(new ApiResponse(200, {}, "Logged Out successfull"));
+
+        try {
+            const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!) as 
+                JwtPayload & { _id?: string; };
+
+            const user = await User.findById(decoded._id);
+            if (user) {
+                user.refreshToken = "";
+                await user.save();
+            }
+        } catch (err) {}
+
+        res.clearCookie("accessToken");
+        res.clearCookie("refreshToken");
+        return res.status(200).json(new ApiResponse(200, {}, "Logged Out successfull"));
+    }
+);
+
+export const getCurrentUser = asyncHandler(
+    async(req: Request, res: Response) => {
+
+        if(!req.user) throw new ApiError(401, "Not Authenticated");
+        return res.status(200).json(new ApiResponse(
+            200,
+            { 
+                _id: req.user?._id, 
+                firstName: req.user?.firstName, 
+                lastName: req.user?.lastName, 
+                email: req.user?.email 
+            },
+            "User fetched Successfully"
+        ));
     }
 );
