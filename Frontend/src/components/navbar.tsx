@@ -2,11 +2,13 @@ import { ModeToggle } from "./mode-toggle";
 
 export const Navbar = () => {
     return (
-        <nav className="flex justify-between gap-4 mx-10 py-2">
-            <span className="tracking-tighter text-3xl font-extrabold text-primary flex gap-2 items-center">
+        <nav className="flex flex-wrap justify-between items-center gap-4 px-4 md:px-10 py-2 w-full">
+            <span className="tracking-tighter text-2xl md:text-3xl font-extrabold text-primary flex gap-2 items-center">
                 O-pay
             </span>
-            <ModeToggle/>
+            <div className="ml-auto">
+                <ModeToggle/>
+            </div>
         </nav>
     );
 }
