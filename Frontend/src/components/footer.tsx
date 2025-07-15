@@ -1,9 +1,9 @@
 
 export const Footer = () => {
     return (
-        <section className="w-full border-t px-2 md:px-4">
-            <div className="flex flex-col md:flex-row justify-between items-center py-4 gap-2 text-center">
-                <p className="text-primary tracking-tight text-sm md:text-base">
+        <section className="bottom-0 max-w-7xl mx-10 border-t px-4">
+            <div className="flex justify-between py-4">
+                <p className="text-primary tracking-tight">
                     Designed and Developed by{" "}
                     <span className="font-bold">
                         Asif
