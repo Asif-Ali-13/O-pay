@@ -4,6 +4,7 @@ import { Account } from "../models/account.model";
 import { ApiResponse } from "../utils/ApiResponse";
 import mongoose from "mongoose";
 import { ApiError } from "../utils/ApiError";
+import { User } from "../models/user.model";
 
 
 export const viewBalance = asyncHandler(
@@ -25,8 +26,12 @@ export const transferMoney = asyncHandler(
         const session = await mongoose.startSession();
         session.startTransaction();
 
-        const { amount, to } = req.body;
-        
+        const { amount, to, password } = req.body;
+
+        const user = await User.findById(req.user?._id);
+        const isMatch = await user?.comparePassword(password);
+        if (!isMatch) throw new ApiError(401, "Wrong password");
+
         const sender = await Account.findOne({ user_id: req.user?._id }).session(session);
         if(!sender || sender.balance < amount){
             await session.abortTransaction();
