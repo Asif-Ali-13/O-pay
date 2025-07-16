@@ -10,11 +10,17 @@ const allowedOrigins = [
 ]
 
 app.use(cors({
-  origin: process.env.PROD_ORIGIN || allowedOrigins,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ['Content-Type', 'Authorization'], 
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
-}))
+}));
 
 app.use((req, res, next) => {
   console.log(`[${req.method}] ${req.path}`);
