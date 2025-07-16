@@ -5,19 +5,30 @@ import router from "./routes/index";
 
 const app = express();
 
+const allowedOrigins = [
+	"https://o-pay-frontend.vercel.app",
+]
+
 app.use(cors({
-  origin: process.env.PROD_ORIGIN,
+  origin: process.env.PROD_ORIGIN || allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }))
 
+app.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.path}`);
+  next();
+});
+
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+
+
+app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
 	console.log(`backend is up and running !`);
 })
-
-app.use("/api/v1", router);
 
 export default app;
