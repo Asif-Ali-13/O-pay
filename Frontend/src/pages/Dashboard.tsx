@@ -62,6 +62,7 @@ export default function Dashboard() {
       setDialogOpen(false);
     } catch (e: any) {
       if(e.status === 401) return toast.error("Wrong Password !");
+      if(e.status === 400) return toast.error("Insufficient Balance !");
       toast.error(e?.message || "Transaction failed");
     } finally {
       setDialogLoading(false);
