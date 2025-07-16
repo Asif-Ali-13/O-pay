@@ -6,7 +6,7 @@ import router from "./routes/index";
 const app = express();
 
 app.use(cors({
-  origin: process.env.PROD_ORIGIN || "*",
+  origin: process.env.PROD_ORIGIN,
 	credentials: true
 }))
 
