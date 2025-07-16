@@ -4,7 +4,7 @@ import { connectDB } from "../db/index";
 
 let isConnected = false;
 
-const wrapper = async () => {
+const handlerPromise = (async () => {
   if (!isConnected) {
     try {
       await connectDB();
@@ -15,9 +15,9 @@ const wrapper = async () => {
     }
   }
   return serverless(app);
-};
+})();
 
-export const handler = async (event: any, context: any) => {
-  const handlerFn = await wrapper();
-  return handlerFn(event, context);
+export default async (req: any, res: any) => {
+  const handler = await handlerPromise;
+  return handler(req, res);
 };
