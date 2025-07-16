@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/sonner"
 import NotFound from "./pages/NotFound.tsx";
 import { useUser } from "@/hooks/useUser";
 import React from "react";
+import { GridBackgroundDemo } from "@/components/ui/grid-background";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useUser();
@@ -21,21 +22,23 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-		<Router>
-			<main className="max-w-7xl mx-auto flex flex-col gap-4 p-4 min-h-[100vh]">
-				<Navbar />
-					<Routes>
-						<Route path="/" element={<Home/>}/>
-						<Route path="/signin" element={<SignIn/>}/>
-						<Route path="/signup" element={<SignUp/>}/>
-						<Route path="/dashboard" element={<ProtectedRoute> <Dashboard/> </ProtectedRoute>}/>
-						<Route path="*" element={<NotFound/>}/>
-					</Routes>
-					<Toaster />
-				<Footer />
-			</main>
-		</Router>
-	</ThemeProvider>
+      <Router>
+        {/* Background grid layer */}
+        <GridBackgroundDemo />
+        <main className="max-w-7xl mx-auto flex flex-col gap-4 p-4 min-h-[100vh] relative z-0">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home/>}/>
+            <Route path="/signin" element={<SignIn/>}/>
+            <Route path="/signup" element={<SignUp/>}/>
+            <Route path="/dashboard" element={<ProtectedRoute> <Dashboard/> </ProtectedRoute>}/>
+            <Route path="*" element={<NotFound/>}/>
+          </Routes>
+          <Toaster />
+          <Footer />
+        </main>
+      </Router>
+    </ThemeProvider>
   )
 }
 
