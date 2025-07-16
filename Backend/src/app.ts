@@ -44,4 +44,9 @@ app.get("/", (req: Request, res: Response) => {
 	res.send("Backend is running!");
 });
 
+app.get('/logtest', (req, res) => {
+  console.log('Log test endpoint hit!');
+  res.send('Check your logs!');
+});
+
 export default app;
